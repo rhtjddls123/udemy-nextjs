@@ -1,4 +1,4 @@
 interface MessageType {
-  id: string;
+  id: number;
   text: string;
 }
