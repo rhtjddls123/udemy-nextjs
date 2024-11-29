@@ -7,7 +7,7 @@ interface PostType {
   userFirstName: string;
   userLastName: string;
   likes: number;
-  isLiked: number;
+  isLiked: boolean;
 }
 
 interface NewPostType {

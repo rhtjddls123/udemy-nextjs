@@ -1,41 +1,39 @@
-import { storePost } from "@/lib/posts";
+"use client";
+
+import { createPost } from "@/actions/post";
+import FormSubmit from "@/components/form-submit";
+import { useActionState } from "react";
 
 export default function NewPostPage() {
-  async function createPost(formData: FormData) {
-    "use server";
-    const title = formData.get("title") as string;
-    const image = formData.get("image") as File | null;
-    const content = formData.get("content") as string;
-
-    storePost({
-      imageUrl: "",
-      title,
-      content,
-      userId: 1
-    });
-  }
+  const [state, formAction] = useActionState(createPost, { errors: [] });
 
   return (
     <>
       <h1>Create a new post</h1>
-      <form action={createPost}>
-        <p className="form-control">
+      <form action={formAction}>
+        <div className="form-control">
           <label htmlFor="title">Title</label>
           <input type="text" id="title" name="title" />
-        </p>
-        <p className="form-control">
+        </div>
+        <div className="form-control">
           <label htmlFor="image">Image URL</label>
           <input type="file" accept="image/png, image/jpeg" id="image" name="image" />
-        </p>
-        <p className="form-control">
+        </div>
+        <div className="form-control">
           <label htmlFor="content">Content</label>
           <textarea id="content" name="content" rows={5} />
-        </p>
-        <p className="form-actions">
-          <button type="reset">Reset</button>
-          <button>Create Post</button>
-        </p>
+        </div>
+        <div className="form-actions">
+          <FormSubmit />
+        </div>
       </form>
+      {state.errors && (
+        <ul className="form-errors">
+          {state.errors.map((error) => (
+            <li key={error}>{error}</li>
+          ))}
+        </ul>
+      )}
     </>
   );
 }
